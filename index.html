@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>素因数分解マシーン</title>
+    <style>
+        /* 画面を少し見やすく整えるためのデザイン（おまけ） */
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; background-color: #f0f4f8; }
+        .box { background: white; display: inline-block; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        input { font-size: 20px; padding: 5px; width: 150px; text-align: center; }
+        button { font-size: 20px; padding: 5px 15px; margin-left: 10px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 5px; }
+        button:hover { background: #0056b3; }
+        #result { margin-top: 25px; font-size: 24px; font-weight: bold; color: #333; }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <h2>🔢 素因数分解マシーン</h2>
+        <!-- 数字を入力する箱 -->
+        <input type="number" id="numInput" value="9999" min="2">
+        <!-- 計算を実行するボタン -->
+        <button onclick="startFactorization()">計算する</button>
+        
+        <!-- 結果を表示する場所 -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // 1. ボタンが押されたら動く処理
+        function startFactorization() {
+            // 入力された文字を数字（整数）に変えて取得
+            const inputVal = parseInt(document.getElementById("numInput").value);
+            
+            // 2未満の数字や空欄はエラーにする
+            if (isNaN(inputVal) || inputVal < 2) {
+                document.getElementById("result").innerText = "2以上の整数を入れてね！";
+                return;
+            }
+
+            // 2. 素因数分解の計算（おじい様のプログラム）
+            let n = inputVal;
+            const factors = [];
+
+            while (n % 2 === 0) { factors.push(2); n /= 2; }
+            for (let i = 3; i * i <= n; i += 2) {
+                while (n % i === 0) { factors.push(i); n /= i; }
+            }
+            if (n > 1) { factors.push(n); }
+
+            // 3. 結果を「3 * 3 * 11 * 101」の形につなぎ合わせる
+            // join(" * ") を使うと、配列の中身を「 * 」で自動結合してくれます
+            const formula = factors.join(" * ");
+
+            // 4. 画面に「9999 = 3 * 3 * 11 * 101」と表示する
+            document.getElementById("result").innerText = inputVal + " = " + formula;
+        }
+    </script>
+
+</body>
+</html>
